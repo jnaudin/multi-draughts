@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-import { get } from "svelte/store";
 import { boardStore } from "../stores/stores";
 import { getPossibilities } from "./possibilities";
 

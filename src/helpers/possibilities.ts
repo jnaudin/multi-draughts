@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { boardStore, selectedPieceStore } from "../stores/stores";
+import { boardStore } from "../stores/stores";
 import type { CoordType, PossibilityType } from "../types";
 import { invertColor } from "./utils";
 
@@ -7,7 +7,7 @@ const BACKWARD = true;
 
 export const getPossibilities = (
   selectedPiece: CoordType,
-  isAdditionalMove: boolean = false
+  isAdditionalMove = false
 ): PossibilityType[] => {
   if (!selectedPiece) return [];
 
@@ -23,11 +23,11 @@ export const getPossibilities = (
 
   const move = (
     direction: "left" | "right",
-    backward: boolean = false,
+    backward = false,
     moves: PossibilityType[] = [],
     currentLine: number = line,
     currentCol: number = col,
-    firstCall: boolean = true
+    firstCall = true
   ): PossibilityType[] => {
     const nextMoveLine = backward
       ? currentLine - orientation
@@ -64,7 +64,7 @@ export const getPossibilities = (
     colDirection: "left" | "right",
     currentLine: number = line,
     currentCol: number = col,
-    firstCall: boolean = true
+    firstCall = true
   ): PossibilityType[] => {
     const takeLine = lineDirection === "up" ? currentLine - 1 : currentLine + 1;
     const takeCol = colDirection === "left" ? currentCol - 1 : currentCol + 1;

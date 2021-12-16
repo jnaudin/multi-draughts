@@ -9,7 +9,7 @@ import {
 } from "../../stores/stores";
 import type { CoordType } from "../../types";
 
-export const handlePieceClick = (line: number, col: number) => {
+export const handlePieceClick = (line: number, col: number): void => {
   // selected piece needs to be reactive
   let selectedPiece: CoordType;
   selectedPieceStore.subscribe((value) => {
@@ -26,7 +26,7 @@ export const handlePieceClick = (line: number, col: number) => {
   }
 };
 
-export const handleBoxClick = (line: number, col: number) => {
+export const handleBoxClick = (line: number, col: number): void => {
   const selectedPiece = get(selectedPieceStore);
   const currentPlayer = get(currentPlayerStore);
   const possibility = get(possibilitiesStore)?.find(
