@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Grid from "../components/Grid/Grid.svelte";
-  import Instructions from "../components/Instructions/Instructions.svelte";
+  import Grid from "../lib/Grid/Grid.svelte";
+  import Instructions from "../lib/Instructions/Instructions.svelte";
 </script>
 
 <main>
@@ -12,10 +12,8 @@
 <style>
   main {
     text-align: center;
-    padding: 1em;
-    margin: 0 auto;
+    padding: 0 0 3em;
     background-color: skyblue;
-    height: 100vh;
   }
 
   h1 {
