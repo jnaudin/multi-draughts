@@ -10,7 +10,7 @@ type GameType = {
   turn: "black" | "white";
 };
 
-let games: GameType[] = [];
+const games: GameType[] = [];
 
 const changeTurn = (game: GameType) => {
   game.turn = game.turn === "black" ? "white" : "black";
@@ -25,6 +25,7 @@ wss.on("connection", (ws: WebSocket) => {
 
   ws.on("message", (message) => {
     const [type, arg0] = message.toString().split("-");
+    const game = games.find((game) => game.name === arg0) as GameType;
 
     switch (type) {
       case "create":
@@ -34,7 +35,6 @@ wss.on("connection", (ws: WebSocket) => {
         );
         break;
       case "join":
-        const game = games.find((game) => game.name === arg0)!;
         if (game.player1) {
           game.player2 = ws;
           ws.send("color-black");

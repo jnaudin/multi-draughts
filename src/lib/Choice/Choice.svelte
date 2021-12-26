@@ -4,7 +4,7 @@
     messageStore,
     socketStore,
   } from "../../stores/stores";
-  let gameName: string = "";
+  let gameName = "";
 </script>
 
 {#each $gameListStore as game}

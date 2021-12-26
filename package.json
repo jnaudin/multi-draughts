@@ -2,8 +2,8 @@
   "name": "multi-draughts",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "dev": "svelte-kit dev && tsc && node dist/backend/index.js",
+    "build": "svelte-kit build && tsc && node dist/backend/index.js",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

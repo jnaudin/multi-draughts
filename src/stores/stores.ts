@@ -1,6 +1,6 @@
 import { handleBoxClick, handlePieceClick } from "$lib/Box/eventHandlers";
 import type { Writable } from "svelte/store";
-import { get, writable, readable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { getSize, invertColor } from "../helpers/utils";
 import type {
   CellType,
@@ -107,7 +107,9 @@ const createSocket = () => {
   const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
     undefined,
     (set) => {
-      const socket = new WebSocket("ws://localhost:8999/");
+      const socket = new WebSocket(
+        "ws://multi-draughts-85jrrwl49-jnaudin.vercel.app:8999/"
+      );
       set(socket);
 
       socket.addEventListener("message", function (event) {

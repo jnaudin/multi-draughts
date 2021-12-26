@@ -23,15 +23,15 @@ npm run build
 
 REST API needs to have four endpoints:
 /games
-  GET: list available games
-  POST: create a new game
+GET: list available games
+POST: create a new game
 /games/:id
-  GET: find a game by its ID
-  DELETE: delete a game by its ID
+GET: find a game by its ID
+DELETE: delete a game by its ID
 /registration
-  GET: list all registations attached to a game
-  POST: register to a game
-  DELETE: unregister to a game
+GET: list all registations attached to a game
+POST: register to a game
+DELETE: unregister to a game
 /games/:id/click
-  POST: click on a cell - params: {line, col}
+POST: click on a cell - params: {line, col}
 websocket for changes ...
