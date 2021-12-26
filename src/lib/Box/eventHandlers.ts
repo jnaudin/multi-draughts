@@ -11,18 +11,18 @@ import type { CoordType } from "../../types";
 
 export const handlePieceClick = (line: number, col: number): void => {
   // selected piece needs to be reactive
-  let selectedPiece: CoordType;
+  let selectedPiece: CoordType | undefined = get(selectedPieceStore);
+  const isAdditionalMove = get(isAdditionalMoveStore);
   selectedPieceStore.subscribe((value) => {
-    selectedPiece = value;
+    selectedPiece = value!;
   });
   const isSelected = line === selectedPiece?.line && col === selectedPiece?.col;
   const isCurrentPlayerColor =
     get(boardStore)[line][col].piece?.color === get(currentPlayerStore);
-
-  if (!get(isAdditionalMoveStore) && isCurrentPlayerColor) {
-    if (isSelected) possibilitiesStore.set(undefined);
+  if (!isAdditionalMove && isCurrentPlayerColor) {
+    if (isSelected) possibilitiesStore.set([]);
     selectedPieceStore.set(isSelected ? undefined : { line, col });
-    possibilitiesStore.set(getPossibilities(selectedPiece));
+    possibilitiesStore.set(getPossibilities(selectedPiece!));
   }
 };
 
@@ -44,8 +44,8 @@ export const handleBoxClick = (line: number, col: number): void => {
 
     if (possibility.type === "take") {
       boardStore.removePiece(
-        possibility.takeCoord.line,
-        possibility.takeCoord.col
+        possibility.takeCoord!.line,
+        possibility.takeCoord!.col
       );
       const newPossibilities = getPossibilities({ line, col }, true);
       if (newPossibilities.length) {
@@ -58,7 +58,7 @@ export const handleBoxClick = (line: number, col: number): void => {
     if (!get(isAdditionalMoveStore)) {
       selectedPieceStore.set(undefined);
       currentPlayerStore.change();
-      possibilitiesStore.set(undefined);
+      possibilitiesStore.set([]);
     }
   }
 };

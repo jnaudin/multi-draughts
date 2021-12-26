@@ -1,7 +1,14 @@
+import { handleBoxClick, handlePieceClick } from "$lib/Box/eventHandlers";
 import type { Writable } from "svelte/store";
-import { get, writable } from "svelte/store";
+import { get, writable, readable } from "svelte/store";
 import { getSize, invertColor } from "../helpers/utils";
-import type { CellType, ColorType, CoordType, PossibilityType } from "../types";
+import type {
+  CellType,
+  ColorType,
+  CoordType,
+  PieceType,
+  PossibilityType,
+} from "../types";
 
 const createCurrentPlayer = () => {
   const { subscribe, set, update }: Writable<ColorType> = writable("white");
@@ -55,16 +62,16 @@ const createBoard = () => {
   const setPieceType = (
     x: number,
     y: number,
-    type: CellType["piece"]["type"] = "lady"
+    type: PieceType["type"] = "lady"
   ) => {
-    const previousPiece = get(boardStore)[x][y].piece;
+    const previousPiece = get(boardStore)[x][y].piece!;
     updateBox(x, y, { ...previousPiece, type });
   };
 
   const updateBox = (
     lineToUpdate: number,
     colToUpdate: number,
-    piece: CellType["piece"]
+    piece: PieceType | undefined
   ) =>
     update((board) =>
       board.map((line, lineIndex) =>
@@ -91,3 +98,41 @@ const createBoard = () => {
 };
 
 export const boardStore = createBoard();
+
+const createSocket = () => {
+  const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
+    undefined,
+    (set) => {
+      const socket = new WebSocket("ws://localhost:8999/");
+      set(socket);
+
+      socket.addEventListener("message", function (event) {
+        const [type, line, col]: [
+          type: "piece" | "box",
+          line: string,
+          col: string
+        ] = event.data.split("-");
+        if (type === "piece") handlePieceClick(+line, +col);
+        else handleBoxClick(+line, +col);
+      });
+
+      return () => {
+        socket.close();
+      };
+    }
+  );
+
+  const sendMessage = (message: string) => {
+    const socket = get(socketStore);
+    if (socket.readyState <= 1) {
+      socket.send(message);
+    }
+  };
+
+  return {
+    subscribe,
+    sendMessage,
+  };
+};
+
+export const socketStore = createSocket();

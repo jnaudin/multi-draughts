@@ -1,6 +1,14 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { socketStore } from "../stores/stores";
+
   import Grid from "../lib/Grid/Grid.svelte";
   import Instructions from "../lib/Instructions/Instructions.svelte";
+
+  //subscribe to store to connect to the websocket
+  onMount(() => {
+    socketStore.subscribe((data) => console.log("subscribe", data));
+  });
 </script>
 
 <main>

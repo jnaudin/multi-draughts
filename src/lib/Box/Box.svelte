@@ -3,6 +3,7 @@
     boardStore,
     selectedPieceStore,
     possibilitiesStore,
+    socketStore,
   } from "../../stores/stores";
 
   import type { CellType, CoordType, PossibilityType } from "../../types";
@@ -42,13 +43,20 @@
 <div
   data-testid={`box-${line}-${col}`}
   class={`${isPossibility} box${isPossibility ? " possible" : ""}`}
-  on:click={() => handleBoxClick(line, col)}
+  on:click={() => {
+    handleBoxClick(line, col);
+    socketStore.sendMessage(`box-${line}-${col}`);
+  }}
 >
   {#if piece}
     <div
       data-testid={`piece-${line}-${col}`}
       class={`${piece.type} piece-${isSelected ? "selected" : piece.color}`}
-      on:click={() => handlePieceClick(line, col)}
+      on:click={(event) => {
+        event.stopPropagation();
+        handlePieceClick(line, col);
+        socketStore.sendMessage(`piece-${line}-${col}`);
+      }}
     />
   {/if}
 </div>

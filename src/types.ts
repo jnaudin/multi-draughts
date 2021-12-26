@@ -11,7 +11,6 @@ export type PossibilityType = {
 
 export type ColorType = "white" | "black";
 
-export type CellType = {
-  background: ColorType;
-  piece?: { color: ColorType; type: "pawn" | "lady" };
-};
+export type PieceType = { color: ColorType; type: "pawn" | "lady" };
+
+export type CellType = { background: ColorType; piece?: PieceType };
