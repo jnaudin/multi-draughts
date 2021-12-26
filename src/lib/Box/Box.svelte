@@ -4,6 +4,8 @@
     selectedPieceStore,
     possibilitiesStore,
     socketStore,
+    colorStore,
+    currentPlayerStore,
   } from "../../stores/stores";
 
   import type { CellType, CoordType, PossibilityType } from "../../types";
@@ -13,7 +15,7 @@
   export let col: number;
 
   let board: CellType[][];
-  let selectedPiece: CoordType;
+  let selectedPiece: CoordType | undefined;
   let possibilities: PossibilityType[];
 
   boardStore.subscribe((value) => {
@@ -44,8 +46,10 @@
   data-testid={`box-${line}-${col}`}
   class={`${isPossibility} box${isPossibility ? " possible" : ""}`}
   on:click={() => {
-    handleBoxClick(line, col);
-    socketStore.sendMessage(`box-${line}-${col}`);
+    if ($colorStore === $currentPlayerStore) {
+      handleBoxClick(line, col);
+      socketStore.sendMessage(`box-${line}-${col}`);
+    }
   }}
 >
   {#if piece}
@@ -54,8 +58,10 @@
       class={`${piece.type} piece-${isSelected ? "selected" : piece.color}`}
       on:click={(event) => {
         event.stopPropagation();
-        handlePieceClick(line, col);
-        socketStore.sendMessage(`piece-${line}-${col}`);
+        if ($colorStore === $currentPlayerStore) {
+          handlePieceClick(line, col);
+          socketStore.sendMessage(`piece-${line}-${col}`);
+        }
       }}
     />
   {/if}

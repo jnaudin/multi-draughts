@@ -27,6 +27,7 @@ export const selectedPieceStore: Writable<CoordType | undefined> =
   writable(undefined);
 export const possibilitiesStore: Writable<PossibilityType[]> = writable([]);
 export const isAdditionalMoveStore: Writable<boolean> = writable(false);
+export const colorStore: Writable<ColorType | undefined> = writable(undefined);
 
 const getInitialBoard: () => CellType[][] = () =>
   new Array(getSize(false)).fill(0).map((_val, lineIndex) =>
@@ -107,13 +108,14 @@ const createSocket = () => {
       set(socket);
 
       socket.addEventListener("message", function (event) {
-        const [type, line, col]: [
-          type: "piece" | "box",
-          line: string,
-          col: string
+        const [type, arg0, arg1]: [
+          type: "piece" | "box" | "color",
+          arg0: string,
+          arg1: string
         ] = event.data.split("-");
-        if (type === "piece") handlePieceClick(+line, +col);
-        else handleBoxClick(+line, +col);
+        if (type === "color") colorStore.set(arg0 as ColorType);
+        if (type === "piece") handlePieceClick(+arg0, +arg1);
+        if (type === "box") handleBoxClick(+arg0, +arg1);
       });
 
       return () => {

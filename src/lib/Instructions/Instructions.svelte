@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { currentPlayerStore } from "../../stores/stores";
+  import { colorStore, currentPlayerStore } from "../../stores/stores";
 </script>
 
 <div class={`text ${$currentPlayerStore}`}>
-  {{ white: "blanc", black: "noir" }[$currentPlayerStore]}, à toi de jouer
+  Tu es {{ white: "blanc", black: "noir" }[$colorStore || "white"]},
+  {$currentPlayerStore === $colorStore ? "à toi de jouer" : "à l'adversaire"}
 </div>
 
 <style>
