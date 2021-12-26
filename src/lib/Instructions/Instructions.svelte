@@ -3,8 +3,12 @@
 </script>
 
 <div class={`text ${$currentPlayerStore}`}>
-  Tu es {{ white: "blanc", black: "noir" }[$colorStore || "white"]},
-  {$currentPlayerStore === $colorStore ? "à toi de jouer" : "à l'adversaire"}
+  {#if $colorStore}
+    Tu es {{ white: "blanc", black: "noir" }[$colorStore]},
+    {$currentPlayerStore === $colorStore ? "à toi de jouer" : "à l'adversaire"}
+  {:else}
+    En attente d'un adversaire ...
+  {/if}
 </div>
 
 <style>

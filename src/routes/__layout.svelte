@@ -1,12 +1,15 @@
 <script lang="ts">
-  // import Header from "lib/Header/Header.svelte";
+  import Header from "$lib/Header/Header.svelte";
+  import { messageStore } from "../stores/stores";
+
   import "../app.css";
 </script>
 
-<!-- <Header /> -->
+<Header />
 
 <main>
   <slot />
+  <div>{$messageStore}</div>
 </main>
 
 <footer>

@@ -1,9 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { socketStore } from "../stores/stores";
+  import { gameStore, socketStore } from "../stores/stores";
 
   import Grid from "../lib/Grid/Grid.svelte";
   import Instructions from "../lib/Instructions/Instructions.svelte";
+  import Choice from "$lib/Choice/Choice.svelte";
 
   //subscribe to store to connect to the websocket
   onMount(() => {
@@ -13,8 +14,12 @@
 
 <main>
   <h1>Jeu de dames</h1>
-  <Grid />
-  <Instructions />
+  {#if $gameStore}
+    <Grid />
+    <Instructions />
+  {:else}
+    <Choice />
+  {/if}
 </main>
 
 <style>
