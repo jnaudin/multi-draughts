@@ -108,7 +108,7 @@ const createSocket = () => {
     undefined,
     (set) => {
       const socket = new WebSocket(
-        "ws://multi-draughts-85jrrwl49-jnaudin.vercel.app:8999/"
+        "ws://draughts-backend.herokuapp.com:80/"
       );
       set(socket);
 
