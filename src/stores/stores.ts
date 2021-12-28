@@ -107,9 +107,7 @@ const createSocket = () => {
   const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
     undefined,
     (set) => {
-      const socket = new WebSocket(
-        "ws://draughts-backend.herokuapp.com:80/"
-      );
+      const socket = new WebSocket("wss://draughts-backend.nahoj.dev:443/");
       set(socket);
 
       socket.addEventListener("message", function (event) {
