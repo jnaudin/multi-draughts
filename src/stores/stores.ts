@@ -107,7 +107,7 @@ const createSocket = () => {
   const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
     undefined,
     (set) => {
-      const socket = new WebSocket("wss://draughts-backend.nahoj.dev:443/");
+      const socket = new WebSocket("wss://draughts-backend.nohaj.dev/");
       set(socket);
 
       socket.addEventListener("message", function (event) {

@@ -6,5 +6,5 @@ node_modules
 .env
 .env.*
 !.env.example
-/dist
 /.vercel_build_output
+/dist
