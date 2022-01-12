@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { gameStore, socketStore } from "../stores/stores";
+  import { gameStore, gameTypeStore } from "../stores/stores";
+  import { socketStore } from "../stores/socketStore";
 
   import Grid from "../lib/Grid/Grid.svelte";
   import Instructions from "../lib/Instructions/Instructions.svelte";
@@ -13,10 +14,14 @@
 </script>
 
 <main>
-  <h1>Jeu de dames</h1>
+  <h1>Jeux multi</h1>
   {#if $gameStore}
-    <Grid />
-    <Instructions />
+    {#if $gameTypeStore === "draughts"}
+      <Grid />
+      <Instructions />
+    {:else}
+      <div>please py here</div>
+    {/if}
   {:else}
     <Choice />
   {/if}

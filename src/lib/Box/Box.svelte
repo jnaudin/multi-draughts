@@ -3,10 +3,10 @@
     boardStore,
     selectedPieceStore,
     possibilitiesStore,
-    socketStore,
     colorStore,
     currentPlayerStore,
   } from "../../stores/stores";
+  import { socketStore } from "../../stores/socketStore";
 
   import type { CellType, CoordType, PossibilityType } from "../../types";
   import { handleBoxClick, handlePieceClick } from "./eventHandlers";
@@ -48,7 +48,7 @@
   on:click={() => {
     if ($colorStore === $currentPlayerStore) {
       handleBoxClick(line, col);
-      socketStore.sendMessage(`box-${line}-${col}`);
+      socketStore.sendMessage("box", line, col);
     }
   }}
 >
@@ -60,7 +60,7 @@
         event.stopPropagation();
         if ($colorStore === $currentPlayerStore) {
           handlePieceClick(line, col);
-          socketStore.sendMessage(`piece-${line}-${col}`);
+          socketStore.sendMessage("piece", line, col);
         }
       }}
     />

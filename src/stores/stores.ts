@@ -1,4 +1,3 @@
-import { handleBoxClick, handlePieceClick } from "$lib/Box/eventHandlers";
 import type { Writable } from "svelte/store";
 import { get, writable } from "svelte/store";
 import { getSize, invertColor } from "../helpers/utils";
@@ -30,6 +29,7 @@ export const isAdditionalMoveStore: Writable<boolean> = writable(false);
 export const colorStore: Writable<ColorType | undefined> = writable(undefined);
 export const gameListStore: Writable<string[]> = writable([]);
 export const gameStore: Writable<string> = writable("");
+export const gameTypeStore: Writable<GameType> = writable("draughts");
 export const messageStore: Writable<string> = writable("");
 
 const getInitialBoard: () => CellType[][] = () =>
@@ -102,45 +102,3 @@ const createBoard = () => {
 };
 
 export const boardStore = createBoard();
-
-const createSocket = () => {
-  const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
-    undefined,
-    (set) => {
-      const socket = new WebSocket("wss://draughts-backend.nohaj.dev/");
-      set(socket);
-
-      socket.addEventListener("message", function (event) {
-        const [type, arg0, arg1]: [
-          type: "piece" | "box" | "color" | "games" | "message" | "game",
-          arg0: string,
-          arg1: string
-        ] = event.data.split("-");
-        if (type === "color") colorStore.set(arg0 as ColorType);
-        if (type === "piece") handlePieceClick(+arg0, +arg1);
-        if (type === "box") handleBoxClick(+arg0, +arg1);
-        if (type === "games") gameListStore.set(arg0.split(","));
-        if (type === "message") messageStore.set(arg0);
-        if (type === "game") gameStore.set(arg0);
-      });
-
-      return () => {
-        socket.close();
-      };
-    }
-  );
-
-  const sendMessage = (message: string) => {
-    const socket = get(socketStore);
-    if (socket.readyState <= 1) {
-      socket.send(message);
-    }
-  };
-
-  return {
-    subscribe,
-    sendMessage,
-  };
-};
-
-export const socketStore = createSocket();
