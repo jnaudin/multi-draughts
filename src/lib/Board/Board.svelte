@@ -3,6 +3,7 @@
     pyGuesserStore,
     pyHinterStore,
     pyPlayersStore,
+    pyWordStore,
   } from "../../stores/pyStores";
   import { socketStore } from "../../stores/socketStore";
   import { currentPlayerStore } from "../../stores/stores";
@@ -35,6 +36,7 @@
 <h2>en combien de coup ? todo field 1 à 9 shown to hinter</h2>
 <h2>|nom du guesser| dit |mot proposé|</h2>
 <h2>oui ou non ? pour le hinter</h2>
+{#if $pyWordStore} <h3>{$pyWordStore}</h3> {/if}
 
 <style>
 </style>

@@ -3,7 +3,6 @@
   import { socketStore } from "../../stores/socketStore";
   import { pyGameListStore } from "../../stores/pyStores";
   import { toast } from "$lib/Toast/toastStore";
-  import { get } from "svelte/store";
   let gameName = "";
   let gameType = "draughts";
 </script>

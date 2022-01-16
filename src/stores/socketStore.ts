@@ -25,7 +25,7 @@ const createSocket = () => {
     undefined,
     (set) => {
       // const socket = new WebSocket("wss://draughts-backend.nahoj.dev/");
-      const socket = new WebSocket("ws://localhost:443");
+      const socket = new WebSocket(import.meta.env.VITE_WS as string);
       set(socket);
 
       socket.addEventListener("message", function (event) {
@@ -68,8 +68,8 @@ const createSocket = () => {
           gameStore.set(arg0);
         }
         //for pyramide only
-        if (type === "number") pyNumberStore.set(+arg1);
-        if (type === "word") pyWordStore.set(arg1);
+        if (type === "number") pyNumberStore.set(+arg0);
+        if (type === "word") pyWordStore.set(arg0);
         // if (type === "hint") hint(arg1);
         // if (type === "guess") guess(arg1);
         if (type === "side") pyCurrentSideStore.set(arg1 as SideType);
