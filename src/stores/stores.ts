@@ -5,6 +5,7 @@ import type {
   CellType,
   ColorType,
   CoordType,
+  GameType,
   PieceType,
   PossibilityType,
 } from "../types";
@@ -31,6 +32,7 @@ export const gameListStore: Writable<string[]> = writable([]);
 export const gameStore: Writable<string> = writable("");
 export const gameTypeStore: Writable<GameType> = writable("draughts");
 export const messageStore: Writable<string> = writable("");
+export const playerNameStore: Writable<string> = writable("");
 
 const getInitialBoard: () => CellType[][] = () =>
   new Array(getSize(false)).fill(0).map((_val, lineIndex) =>

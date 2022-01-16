@@ -6,4 +6,4 @@ export const invertColor = (color: ColorType): ColorType =>
   color === "black" ? "white" : "black";
 
 export const invertSide = (side: SideType): SideType =>
-  side === "propose" ? "guess" : "propose";
+  side === "hint" ? "guess" : "hint";

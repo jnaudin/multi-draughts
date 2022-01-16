@@ -6,6 +6,8 @@
   import Grid from "../lib/Grid/Grid.svelte";
   import Instructions from "../lib/Instructions/Instructions.svelte";
   import Choice from "$lib/Choice/Choice.svelte";
+  import Board from "$lib/Board/Board.svelte";
+import NameInput from "$lib/NameInput/NameInput.svelte";
 
   //subscribe to store to connect to the websocket
   onMount(() => {
@@ -15,12 +17,13 @@
 
 <main>
   <h1>Jeux multi</h1>
+  <NameInput />
   {#if $gameStore}
     {#if $gameTypeStore === "draughts"}
       <Grid />
       <Instructions />
     {:else}
-      <div>please py here</div>
+      <Board />
     {/if}
   {:else}
     <Choice />

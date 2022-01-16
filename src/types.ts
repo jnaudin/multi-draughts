@@ -15,6 +15,6 @@ export type PieceType = { color: ColorType; type: "pawn" | "lady" };
 
 export type CellType = { background: ColorType; piece?: PieceType };
 
-export type SideType = "guess" | "propose";
+export type SideType = "guess" | "hint";
 
 export type GameType = "draughts" | "py";

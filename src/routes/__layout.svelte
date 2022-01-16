@@ -1,15 +1,15 @@
 <script lang="ts">
+  import Toast from "$lib/Toast/Toast.svelte";
   import Header from "$lib/Header/Header.svelte";
   import { messageStore } from "../stores/stores";
 
   import "../app.css";
 </script>
 
+<Toast />
 <Header />
-
 <main>
   <slot />
-  <div>{$messageStore}</div>
 </main>
 
 <footer>
