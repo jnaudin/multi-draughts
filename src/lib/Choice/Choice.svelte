@@ -3,37 +3,20 @@
   import { socketStore } from "../../stores/socketStore";
   import { pyGameListStore } from "../../stores/pyStores";
   import { toast } from "$lib/Toast/toastStore";
+  import Add from "../assets/add.svg";
+  import GameList from "$lib/GameList/GameList.svelte";
   let gameName = "";
   let gameType = "draughts";
+  const addGame = () => {
+    gameName = gameName.replaceAll(/-|,/g, " ");
+    socketStore.sendMessage("create", gameName, gameType);
+    toast.add({ message: `Partie de ${gameType} créée : ${gameName}` });
+    gameName = "";
+  };
 </script>
 
-{#if $gameListStore[0]}
-  <h1>Dames</h1>
-  {#each $gameListStore as game, i}
-    <ul>
-      {game}
-      <button
-        on:click={() => {
-          socketStore.sendMessage("join", game);
-        }}>Rejoindre</button
-      >
-    </ul>
-  {/each}
-{/if}
-
-{#if $pyGameListStore[0]}
-  <h1>Pyramide</h1>
-  {#each $pyGameListStore as game}
-    <ul>
-      {game}
-      <button
-        on:click={() => {
-          socketStore.sendMessage("join", game);
-        }}>Rejoindre</button
-      >
-    </ul>
-  {/each}
-{/if}
+<GameList label="Dames" games={$gameListStore} />
+<GameList label="Pyramide" games={$pyGameListStore} />
 
 <div class="flex">
   <div class="section">
@@ -56,18 +39,7 @@
     <label for="gameName">Nom de partie : </label>
     <input id="gameName" bind:value={gameName} />
   </div>
-  <button
-    on:click={() => {
-      gameName= gameName.replaceAll(/-|,/g, " ");
-      socketStore.sendMessage("create", gameName, gameType);
-      // messageStore.set(`Partie de ${gameType} créée : ${gameName}`);
-      toast.add({
-        type: "info",
-        message: `Partie de ${gameType} créée : ${gameName}`,
-      });
-      gameName = "";
-    }}>Créer une nouvelle partie</button
-  >
+  <img on:click={addGame} src={Add} alt="ajouter" />
 </div>
 
 <style>
@@ -84,8 +56,15 @@
 
   .section {
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: start;
-    margin: 0 1rem;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    align-self: end;
+    margin-left: 0.5rem;
   }
 </style>

@@ -7,7 +7,7 @@
   import Instructions from "../lib/Instructions/Instructions.svelte";
   import Choice from "$lib/Choice/Choice.svelte";
   import Board from "$lib/Board/Board.svelte";
-import NameInput from "$lib/NameInput/NameInput.svelte";
+  import NameInput from "$lib/NameInput/NameInput.svelte";
 
   //subscribe to store to connect to the websocket
   onMount(() => {
@@ -34,13 +34,12 @@ import NameInput from "$lib/NameInput/NameInput.svelte";
   main {
     text-align: center;
     padding: 0 0 3em;
-    background-color: skyblue;
   }
 
   h1 {
     color: brown;
     text-transform: uppercase;
-    font-size: 4em;
+    font-size: 2em;
     font-weight: 500;
   }
 </style>

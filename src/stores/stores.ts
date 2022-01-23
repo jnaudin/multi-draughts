@@ -31,7 +31,6 @@ export const colorStore: Writable<ColorType | undefined> = writable(undefined);
 export const gameListStore: Writable<string[]> = writable([]);
 export const gameStore: Writable<string> = writable("");
 export const gameTypeStore: Writable<GameType> = writable("draughts");
-export const messageStore: Writable<string> = writable("");
 export const playerNameStore: Writable<string> = writable("");
 
 const getInitialBoard: () => CellType[][] = () =>

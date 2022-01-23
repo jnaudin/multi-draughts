@@ -1,23 +1,22 @@
 <script lang="ts">
   import Toast from "$lib/Toast/Toast.svelte";
   import Header from "$lib/Header/Header.svelte";
-  import { messageStore } from "../stores/stores";
 
   import "../app.css";
 </script>
 
 <Toast />
-<Header />
+<!-- <Header /> -->
 <main>
   <slot />
 </main>
 
-<footer>
+<!-- <footer>
   <p>
     visit <a href="https://github.com/jnaudin">my github</a> to see more apps and
     games
   </p>
-</footer>
+</footer> -->
 
 <style>
   main {

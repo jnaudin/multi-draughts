@@ -39,7 +39,7 @@
     border-left: 4px solid blueviolet;
     box-shadow: 0 7px 20px 0 rgba(var(--rgb-grey-1000), 0.22);
     left: 50%;
-    width: calc(100% - 20rem);
+    width: calc(100% - 2rem);
     transform: translate(-50%, 0);
 
     /* @media (--large-min-viewport) {

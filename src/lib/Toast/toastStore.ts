@@ -1,8 +1,8 @@
 import { writable } from "svelte/store";
 
 export interface ToastType {
-  type: "info" | "error";
   message: string;
+  type?: "info" | "error";
   transitionDelay?: number;
 }
 

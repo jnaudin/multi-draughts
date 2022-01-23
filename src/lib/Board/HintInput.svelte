@@ -1,17 +1,24 @@
 <script lang="ts">
   import { socketStore } from "../../stores/socketStore";
-  import { pyHinterStore, pyHintStore } from "../../stores/pyStores";
+  import {
+    foundStore,
+    pyGuessesStore,
+    pyHinterStore,
+    pyHintsStore,
+    pyNumberStore,
+  } from "../../stores/pyStores";
   import { playerNameStore } from "../../stores/stores";
+  let hint = "";
 </script>
 
-{#if $pyHinterStore === $playerNameStore}
+{#if $pyHinterStore === $playerNameStore && !!$pyNumberStore && $pyHintsStore.length === $pyGuessesStore.length}
   <div class="container">
     <label for="hintWord">Un mot pour l'aider : </label>
-    <input id="hintWord" bind:value={$pyHintStore} />
+    <input id="hintWord" bind:value={hint} />
     <button
       on:click={() => {
-        pyHintStore.update((h) => h.replaceAll(/-|,/g, " "));
-        socketStore.sendMessage("hint", $pyHintStore);
+        socketStore.sendMessage("hint", hint.replaceAll(/-|,/g, " "));
+        socketStore.sendMessage("found", "WAIT");
       }}
     >
       je propose

@@ -1,17 +1,21 @@
 <script lang="ts">
   import { socketStore } from "../../stores/socketStore";
-  import { pyGuesserStore, pyGuessStore } from "../../stores/pyStores";
+  import {
+    pyGuesserStore,
+    pyGuessesStore,
+    pyHintsStore,
+  } from "../../stores/pyStores";
   import { playerNameStore } from "../../stores/stores";
+  let guess = "";
 </script>
 
-{#if $pyGuesserStore === $playerNameStore}
+{#if $pyGuesserStore === $playerNameStore && $pyHintsStore.length > $pyGuessesStore.length}
   <div class="container">
-    <label for="guessWord">le mot est : </label>
-    <input id="guessWord" bind:value={$pyGuessStore} />
+    <label for="guessWord">Je devine : </label>
+    <input id="guessWord" bind:value={guess} />
     <button
       on:click={() => {
-        pyGuessStore.update((h) => h.replaceAll(/-|,/g, " "));
-        socketStore.sendMessage("guess", $pyGuessStore);
+        socketStore.sendMessage("guess", guess.replaceAll(/-|,/g, " "));
       }}
     >
       je propose

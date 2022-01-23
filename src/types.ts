@@ -18,3 +18,5 @@ export type CellType = { background: ColorType; piece?: PieceType };
 export type SideType = "guess" | "hint";
 
 export type GameType = "draughts" | "py";
+
+export type FoundType = "OK" | "KO" | "WAIT";

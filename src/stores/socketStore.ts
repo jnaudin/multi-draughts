@@ -1,12 +1,15 @@
 import { handleBoxClick, handlePieceClick } from "$lib/Box/eventHandlers";
-import type { ColorType, GameType, SideType } from "src/types";
+import { toast } from "$lib/Toast/toastStore";
+import type { ColorType, FoundType, GameType } from "src/types";
 import type { Writable } from "svelte/store";
 import { get, writable } from "svelte/store";
 import {
-  pyCurrentSideStore,
+  foundStore,
   pyGameListStore,
   pyGuesserStore,
+  pyGuessesStore,
   pyHinterStore,
+  pyHintsStore,
   pyNumberStore,
   pyPlayersStore,
   pyWordStore,
@@ -16,7 +19,6 @@ import {
   gameListStore,
   gameStore,
   gameTypeStore,
-  messageStore,
   playerNameStore,
 } from "./stores";
 
@@ -40,39 +42,69 @@ const createSocket = () => {
             | "number"
             | "word"
             | "side"
-            | "hint"
-            | "guess"
+            | "hints"
+            | "guesses"
             | "type"
             | "changename"
             | "players"
             | "guesser"
-            | "hinter",
+            | "hinter"
+            | "found",
           arg0: string,
           arg1: string,
           arg2: string
         ] = event.data.split("-");
         if (type === "changename") playerNameStore.set(arg0);
         if (type === "players") pyPlayersStore.set(arg0.split(","));
-        if (type === "guesser") pyGuesserStore.set(arg0);
-        if (type === "hinter") pyHinterStore.set(arg0);
+        if (type === "guesser") {
+          toast.add({ message: `${arg0} va faire deviner le mot` });
+          pyGuesserStore.set(arg0);
+        }
+        if (type === "hinter") {
+          toast.add({ message: `${arg0} va essayer de deviner le mot` });
+          pyHinterStore.set(arg0);
+        }
         if (type === "color") colorStore.set(arg0 as ColorType);
         if (type === "piece") handlePieceClick(+arg1, +arg2);
         if (type === "box") handleBoxClick(+arg1, +arg2);
         if (type === "games")
           (arg0 === "py" ? pyGameListStore : gameListStore).set(
-            arg1.split(",")
+            arg1 ? arg1.split(",") : []
           );
-        if (type === "message") messageStore.set(arg0);
+        if (type === "message") toast.add({ message: arg0 });
         if (type === "game") {
           gameTypeStore.set(arg1 as GameType);
           gameStore.set(arg0);
+          toast.add({ message: `Une partie de ${arg1} commence : ${arg0}` });
         }
         //for pyramide only
-        if (type === "number") pyNumberStore.set(+arg0);
+        if (type === "number") {
+          pyNumberStore.set(+arg1);
+          toast.add({
+            message: `${get(pyHinterStore)} va tenter ${arg1} mots !`,
+          });
+        }
         if (type === "word") pyWordStore.set(arg0);
-        // if (type === "hint") hint(arg1);
-        // if (type === "guess") guess(arg1);
-        if (type === "side") pyCurrentSideStore.set(arg1 as SideType);
+        if (type === "hints") {
+          const hints = arg0.split(",");
+          pyHintsStore.set(hints);
+          toast.add({
+            message: `Indice de ${get(pyHinterStore)} : ${hints.at(-1)}`,
+          });
+        }
+        if (type === "guesses") {
+          const guesses = arg0.split(",");
+          pyGuessesStore.set(guesses);
+          toast.add({
+            message: `${get(pyGuesserStore)} propose : ${guesses.at(-1)}`,
+          });
+        }
+        if (type === "found") {
+          foundStore.set(arg1 as FoundType);
+          toast.add({
+            message: `${get(pyGuesserStore)} propose : ${guesses.at(-1)}`,
+          });
+        }
       });
 
       return () => {
