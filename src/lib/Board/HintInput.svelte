@@ -19,6 +19,7 @@
       on:click={() => {
         socketStore.sendMessage("hint", hint.replaceAll(/-|,/g, " "));
         socketStore.sendMessage("found", "WAIT");
+        hint = "";
       }}
     >
       je propose

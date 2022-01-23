@@ -20,3 +20,22 @@ export type SideType = "guess" | "hint";
 export type GameType = "draughts" | "py";
 
 export type FoundType = "OK" | "KO" | "WAIT";
+
+export type WsMessageType =
+  | "piece"
+  | "box"
+  | "color"
+  | "games"
+  | "message"
+  | "game"
+  | "number"
+  | "word"
+  | "side"
+  | "hints"
+  | "guesses"
+  | "type"
+  | "changename"
+  | "players"
+  | "guesser"
+  | "hinter"
+  | "found";

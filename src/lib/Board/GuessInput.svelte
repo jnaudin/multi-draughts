@@ -16,6 +16,7 @@
     <button
       on:click={() => {
         socketStore.sendMessage("guess", guess.replaceAll(/-|,/g, " "));
+        guess = "";
       }}
     >
       je propose

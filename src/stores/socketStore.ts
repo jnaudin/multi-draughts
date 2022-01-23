@@ -1,6 +1,6 @@
 import { handleBoxClick, handlePieceClick } from "$lib/Box/eventHandlers";
 import { toast } from "$lib/Toast/toastStore";
-import type { ColorType, FoundType, GameType } from "src/types";
+import type { ColorType, FoundType, GameType, WsMessageType } from "src/types";
 import type { Writable } from "svelte/store";
 import { get, writable } from "svelte/store";
 import {
@@ -22,6 +22,21 @@ import {
   playerNameStore,
 } from "./stores";
 
+// const setToast = (type: WsMessageType, arg0: string, arg1: string) => {
+//   const messages: {WsMessageType: string} = {
+//     guesser: `${arg0} va faire deviner le mot`,
+//     hinter: `${arg0} va essayer de deviner le mot`,
+//     message: arg0,
+//     game: `Une partie de ${arg1} commence : ${arg0}`,
+//     number: `${get(pyHinterStore)} va tenter ${arg1} mots !`,
+//     hints: `Indice de ${get(pyHinterStore)} : ${arg0}`,
+//     guesses: `${get(pyGuesserStore)} propose : ${arg0}`,
+//     found:
+//       arg1 === "OK" ? "Raté !" : `Bravo ${get(pyGuesserStore)}, c'est trouvé !`,
+//   };
+//   toast.add(messages[type]);
+// };
+
 const createSocket = () => {
   const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
     undefined,
@@ -32,24 +47,7 @@ const createSocket = () => {
 
       socket.addEventListener("message", function (event) {
         const [type, arg0, arg1, arg2]: [
-          type:
-            | "piece"
-            | "box"
-            | "color"
-            | "games"
-            | "message"
-            | "game"
-            | "number"
-            | "word"
-            | "side"
-            | "hints"
-            | "guesses"
-            | "type"
-            | "changename"
-            | "players"
-            | "guesser"
-            | "hinter"
-            | "found",
+          type: WsMessageType,
           arg0: string,
           arg1: string,
           arg2: string
@@ -102,7 +100,10 @@ const createSocket = () => {
         if (type === "found") {
           foundStore.set(arg1 as FoundType);
           toast.add({
-            message: `${get(pyGuesserStore)} propose : ${guesses.at(-1)}`,
+            message:
+              arg1 === "OK"
+                ? `Bravo ${get(pyGuesserStore)}, c'est trouvé !`
+                : "Raté !",
           });
         }
       });

@@ -4,7 +4,7 @@
   import { onDestroy } from "svelte";
   import { get } from "svelte/store";
 
-  export let duration = 3e3;
+  export let duration = 1e4;
   let timeout: NodeJS.Timeout;
 
   const unsubcribe = toast.subscribe((value) => {

@@ -42,36 +42,37 @@
   <h2>{$pyGuesserStore} est le joueur qui devine.</h2>
 {/if}
 {#if $pyHintsStore.length}
-  <h2>Indices de {$pyGuesserStore} : {$pyHintsStore.join(", ")}</h2>
+  <h2>Indices : <b>{$pyHintsStore.join(", ")}</b></h2>
 {/if}
 {#if $pyGuessesStore.length}
-  <h2>Proposition de {$pyHinterStore} : {$pyGuessesStore.join(", ")}</h2>
+  <h2>Proposition : <b>{$pyGuessesStore.join(", ")}</b></h2>
 {/if}
 {#if $pyNumberStore}
   <h2>{$pyHintsStore.length}/{$pyNumberStore} tentatives</h2>
 {/if}
-<HintInput />
-<GuessInput />
-<NumberInput />
-
-{#if $pyHinterStore === $playerNameStore && $pyGuessesStore.length === $pyHintsStore.length && $foundStore === "WAIT"}
-  <img
-    on:click={() => socketStore.sendMessage("found", "OK")}
-    src={Ok}
-    alt="c'est ça !"
-  />
-  <img
-    on:click={() => socketStore.sendMessage("found", "KO")}
-    src={Ko}
-    alt="c'est pas ça :("
-  />
-{/if}
-<!-- si hinter et taille guesses = taille hints et pas répondu (si donne un hint => pas répondu = true) -->
-<!-- <h2>oui ou non ? pour le hinter</h2> -->
-{#if $pyWordStore} <h3>{$pyWordStore}</h3> {/if}
 {#if $foundStore === "OK"}
-<h1>C'est gagné !!!!!</h1>
+  <h1>C'est gagné ! Le mot était {$pyWordStore}.</h1>
+{:else}
+  <HintInput />
+  <GuessInput />
+  <NumberInput />
+
+  {#if $pyHinterStore === $playerNameStore && $pyGuessesStore.length === $pyHintsStore.length && $foundStore === "WAIT"}
+    <img
+      on:click={() => socketStore.sendMessage("found", "OK")}
+      src={Ok}
+      alt="c'est ça !"
+    />
+    <img
+      on:click={() => socketStore.sendMessage("found", "KO")}
+      src={Ko}
+      alt="c'est pas ça :("
+    />
+  {/if}
 {/if}
+
+{#if $pyWordStore} <h3>{$pyWordStore}</h3> {/if}
+
 <style>
   img {
     width: 48px;
