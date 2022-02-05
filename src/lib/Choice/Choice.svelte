@@ -43,11 +43,6 @@
 </div>
 
 <style>
-  ul {
-    width: 30%;
-    margin: auto;
-  }
-
   .flex {
     margin-top: 3rem;
     display: flex;
@@ -59,6 +54,10 @@
     width: 100%;
     flex-direction: column;
     align-items: start;
+  }
+
+  label {
+    white-space: nowrap;
   }
 
   img {

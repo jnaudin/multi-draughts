@@ -1,21 +1,6 @@
-import type { FoundType, SideType } from "src/types";
+import type { FoundType } from "src/types";
 import type { Writable } from "svelte/store";
 import { writable } from "svelte/store";
-import { invertSide } from "../helpers/utils";
-
-const createTurn = () => {
-  const { subscribe, set, update }: Writable<SideType> = writable("hint");
-  const change = () => update((side) => invertSide(side));
-
-  return {
-    subscribe,
-    set,
-    update,
-    change,
-  };
-};
-
-export const turnStore = createTurn();
 
 export const pyGameListStore: Writable<string[]> = writable([]);
 export const pyNumberStore: Writable<number> = writable(0);

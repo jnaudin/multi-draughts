@@ -38,4 +38,5 @@ export type WsMessageType =
   | "players"
   | "guesser"
   | "hinter"
-  | "found";
+  | "found"
+  | "reset";

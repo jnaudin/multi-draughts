@@ -22,20 +22,30 @@ import {
   playerNameStore,
 } from "./stores";
 
-// const setToast = (type: WsMessageType, arg0: string, arg1: string) => {
-//   const messages: {WsMessageType: string} = {
-//     guesser: `${arg0} va faire deviner le mot`,
-//     hinter: `${arg0} va essayer de deviner le mot`,
-//     message: arg0,
-//     game: `Une partie de ${arg1} commence : ${arg0}`,
-//     number: `${get(pyHinterStore)} va tenter ${arg1} mots !`,
-//     hints: `Indice de ${get(pyHinterStore)} : ${arg0}`,
-//     guesses: `${get(pyGuesserStore)} propose : ${arg0}`,
-//     found:
-//       arg1 === "OK" ? "Raté !" : `Bravo ${get(pyGuesserStore)}, c'est trouvé !`,
-//   };
-//   toast.add(messages[type]);
-// };
+const setToast = (type: WsMessageType, arg0: string, arg1: string) => {
+  const messages: { [key in WsMessageType]?: string } = {
+    guesser: `${arg0} va faire deviner le mot`,
+    hinter: `${arg0} va essayer de deviner le mot`,
+    message: arg0,
+    game: `Une partie de ${arg1} commence : ${arg0}`,
+    number: `${get(pyHinterStore)} va tenter ${arg1} mots !`,
+    // hints: `Indice de ${get(pyHinterStore)} : ${arg0.split(",").at(-1)}`,
+    hints: `Indice de ${get(pyHinterStore)} : ${
+      arg0 ? arg0.split(",").at(-1) : ""
+    }`,
+    guesses: `${get(pyGuesserStore)} propose : ${
+      arg0 ? arg0.split(",").at(-1) : ""
+    }`,
+    found:
+      arg1 === "KO"
+        ? "Raté !"
+        : arg1 === "OK"
+        ? `Bravo ${get(pyGuesserStore)}, c'est trouvé !`
+        : "",
+    reset: `Début d'une nouvelle partie`,
+  };
+  if (messages[type]) toast.add({ message: messages[type] || "" });
+};
 
 const createSocket = () => {
   const { subscribe }: Writable<WebSocket> = writable<WebSocket>(
@@ -54,14 +64,8 @@ const createSocket = () => {
         ] = event.data.split("-");
         if (type === "changename") playerNameStore.set(arg0);
         if (type === "players") pyPlayersStore.set(arg0.split(","));
-        if (type === "guesser") {
-          toast.add({ message: `${arg0} va faire deviner le mot` });
-          pyGuesserStore.set(arg0);
-        }
-        if (type === "hinter") {
-          toast.add({ message: `${arg0} va essayer de deviner le mot` });
-          pyHinterStore.set(arg0);
-        }
+        if (type === "guesser") pyGuesserStore.set(arg0);
+        if (type === "hinter") pyHinterStore.set(arg0);
         if (type === "color") colorStore.set(arg0 as ColorType);
         if (type === "piece") handlePieceClick(+arg1, +arg2);
         if (type === "box") handleBoxClick(+arg1, +arg2);
@@ -69,43 +73,34 @@ const createSocket = () => {
           (arg0 === "py" ? pyGameListStore : gameListStore).set(
             arg1 ? arg1.split(",") : []
           );
-        if (type === "message") toast.add({ message: arg0 });
         if (type === "game") {
           gameTypeStore.set(arg1 as GameType);
           gameStore.set(arg0);
-          toast.add({ message: `Une partie de ${arg1} commence : ${arg0}` });
         }
-        //for pyramide only
-        if (type === "number") {
-          pyNumberStore.set(+arg1);
-          toast.add({
-            message: `${get(pyHinterStore)} va tenter ${arg1} mots !`,
-          });
-        }
+        if (type === "number") pyNumberStore.set(+arg1);
+
         if (type === "word") pyWordStore.set(arg0);
         if (type === "hints") {
-          const hints = arg0.split(",");
-          pyHintsStore.set(hints);
-          toast.add({
-            message: `Indice de ${get(pyHinterStore)} : ${hints.at(-1)}`,
-          });
+          console.log(arg0, arg0.split(","));
+          pyHintsStore.set(arg0.split(","));
         }
-        if (type === "guesses") {
-          const guesses = arg0.split(",");
-          pyGuessesStore.set(guesses);
-          toast.add({
-            message: `${get(pyGuesserStore)} propose : ${guesses.at(-1)}`,
-          });
-        }
+        if (type === "guesses") pyGuessesStore.set(arg0.split(","));
         if (type === "found") {
+          console.log("FOUND", arg1);
           foundStore.set(arg1 as FoundType);
-          toast.add({
-            message:
-              arg1 === "OK"
-                ? `Bravo ${get(pyGuesserStore)}, c'est trouvé !`
-                : "Raté !",
-          });
         }
+        if (type === "reset") {
+          console.log("RESET");
+          pyNumberStore.set(0);
+          pyWordStore.set("");
+          pyHintsStore.set([]);
+          pyGuessesStore.set([]);
+          pyGuesserStore.set("");
+          pyHinterStore.set("");
+          foundStore.set("KO");
+        }
+
+        setToast(type, arg0, arg1);
       });
 
       return () => {

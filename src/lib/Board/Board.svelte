@@ -16,6 +16,8 @@
   import NumberInput from "./NumberInput.svelte";
   import Ok from "../assets/ok.svg";
   import Ko from "../assets/ko.svg";
+  import { get } from "svelte/store";
+  $: console.log(get(foundStore));
 </script>
 
 <h2>
@@ -52,10 +54,11 @@
 {/if}
 {#if $foundStore === "OK"}
   <h1>C'est gagné ! Le mot était {$pyWordStore}.</h1>
+{:else if $pyNumberStore && $pyHintsStore.length === $pyNumberStore && $foundStore === "KO" && $pyWordStore}
+  <h1>C'est perdu ! Le mot était {$pyWordStore}.</h1>
 {:else}
-  <HintInput />
-  <GuessInput />
   <NumberInput />
+  <GuessInput />
 
   {#if $pyHinterStore === $playerNameStore && $pyGuessesStore.length === $pyHintsStore.length && $foundStore === "WAIT"}
     <img
@@ -68,6 +71,8 @@
       src={Ko}
       alt="c'est pas ça :("
     />
+  {:else}
+    <HintInput />
   {/if}
 {/if}
 
