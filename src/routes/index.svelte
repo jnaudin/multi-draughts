@@ -34,12 +34,13 @@
   main {
     text-align: center;
     padding: 0 0 3em;
+    font-size: clamp(1rem, 0.5rem + 2vw, 2rem);
   }
 
   h1 {
     color: brown;
     text-transform: uppercase;
-    font-size: 2em;
+    font-size: clamp(1.5rem, 1rem + 3vw, 3rem);
     font-weight: 500;
   }
 </style>
